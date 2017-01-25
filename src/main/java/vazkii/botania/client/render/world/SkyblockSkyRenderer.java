@@ -2,16 +2,19 @@
  * This class was created by <Vazkii>. It's distributed as
  * part of the Botania Mod. Get the Source Code in github:
  * https://github.com/Vazkii/Botania
- * 
+ *
  * Botania is Open Source and distributed under the
  * Botania License: http://botaniamod.net/license.php
- * 
+ *
  * File Created @ [18/12/2015, 02:06:56 (GMT)]
  */
 package vazkii.botania.client.render.world;
 
 import java.util.Random;
 
+import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -22,13 +25,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
-
-import org.lwjgl.opengl.GL11;
-
 import vazkii.botania.client.core.handler.ClientTickHandler;
 import vazkii.botania.client.lib.LibResources;
 import vazkii.botania.common.lib.LibObfuscation;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 
 public class SkyblockSkyRenderer extends IRenderHandler {
 
@@ -37,12 +36,12 @@ public class SkyblockSkyRenderer extends IRenderHandler {
 	private static final ResourceLocation textureMoonPhases = new ResourceLocation("textures/environment/moon_phases.png");
 	private static final ResourceLocation textureSun = new ResourceLocation("textures/environment/sun.png");
 	private static final ResourceLocation[] planetTextures = new ResourceLocation[] {
-		new ResourceLocation(LibResources.MISC_PLANET + "0.png"),
-		new ResourceLocation(LibResources.MISC_PLANET + "1.png"),
-		new ResourceLocation(LibResources.MISC_PLANET + "2.png"),
-		new ResourceLocation(LibResources.MISC_PLANET + "3.png"),
-		new ResourceLocation(LibResources.MISC_PLANET + "4.png"),
-		new ResourceLocation(LibResources.MISC_PLANET + "5.png")
+			new ResourceLocation(LibResources.MISC_PLANET + "0.png"),
+			new ResourceLocation(LibResources.MISC_PLANET + "1.png"),
+			new ResourceLocation(LibResources.MISC_PLANET + "2.png"),
+			new ResourceLocation(LibResources.MISC_PLANET + "3.png"),
+			new ResourceLocation(LibResources.MISC_PLANET + "4.png"),
+			new ResourceLocation(LibResources.MISC_PLANET + "5.png")
 	};
 
 	@Override
@@ -52,7 +51,7 @@ public class SkyblockSkyRenderer extends IRenderHandler {
 			return;
 
 		int glSkyList = ReflectionHelper.getPrivateValue(RenderGlobal.class, mc.renderGlobal, LibObfuscation.GL_SKY_LIST);
-		int glSkyList2 = ReflectionHelper.getPrivateValue(RenderGlobal.class, mc.renderGlobal, LibObfuscation.GL_SKY_LIST2); // Horizon line. We don't have it here
+		ReflectionHelper.getPrivateValue(RenderGlobal.class, mc.renderGlobal, LibObfuscation.GL_SKY_LIST2);
 		int starGLCallList = ReflectionHelper.getPrivateValue(RenderGlobal.class, mc.renderGlobal, LibObfuscation.STAR_GL_CALL_LIST);
 
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -65,7 +64,7 @@ public class SkyblockSkyRenderer extends IRenderHandler {
 		float insideVoid = 0;
 		if(mc.thePlayer.posY <= -2)
 			insideVoid = (float) Math.min(1F, -(mc.thePlayer.posY + 2) / 30F);
-		
+
 		f1 = Math.max(0F, f1 - insideVoid);
 		f2 = Math.max(0F, f2 - insideVoid);
 		f3 = Math.max(0F, f3 - insideVoid);
@@ -106,10 +105,10 @@ public class SkyblockSkyRenderer extends IRenderHandler {
 			tessellator1.setColorRGBA_F(afloat[0], afloat[1], afloat[2], 0.0F);
 
 			for(int j = 0; j <= b0; ++j) {
-				f11 = (float)j * (float)Math.PI * 2.0F / (float)b0;
+				f11 = j * (float)Math.PI * 2.0F / b0;
 				float f12 = MathHelper.sin(f11);
 				float f13 = MathHelper.cos(f11);
-				tessellator1.addVertex((double)(f12 * 120.0F), (double)(f13 * 120.0F), (double)(-f13 * 40.0F * afloat[3]));
+				tessellator1.addVertex(f12 * 120.0F, f13 * 120.0F, -f13 * 40.0F * afloat[3]);
 			}
 
 			tessellator1.draw();
@@ -150,7 +149,7 @@ public class SkyblockSkyRenderer extends IRenderHandler {
 				GL11.glRotatef(70F, 1F, 0F, 0F);
 				f10 = 12F;
 				break;
-			case 1: 
+			case 1:
 				GL11.glRotatef(120F, 0F, 0F, 1F);
 				f10 = 15F;
 				break;
@@ -171,7 +170,7 @@ public class SkyblockSkyRenderer extends IRenderHandler {
 		GL11.glPopMatrix();
 
 		// === Rays
-		mc.renderEngine.bindTexture(textureSkybox); 
+		mc.renderEngine.bindTexture(textureSkybox);
 
 		f10 = 20F;
 		a = lowA;
@@ -181,8 +180,6 @@ public class SkyblockSkyRenderer extends IRenderHandler {
 		GL11.glRotatef(220F, 1F, 0F, 0F);
 		GL11.glColor4f(1F, 1F, 1F, a);
 		int angles = 90;
-		float s = 3F;
-		float m = 1F;
 		float y = 2F;
 		float y0 = 0F;
 		float uPer = 1F / 360F;
@@ -209,7 +206,7 @@ public class SkyblockSkyRenderer extends IRenderHandler {
 				float ut = ang * uPer;
 				if(i % 2 == 0) {
 					tessellator1.addVertexWithUV(xp, yo + y0 + y, zp, ut, 1F);
-					tessellator1.addVertexWithUV(xp, yo + y0, zp, ut, 0);   
+					tessellator1.addVertexWithUV(xp, yo + y0, zp, ut, 0);
 				} else {
 					tessellator1.addVertexWithUV(xp, yo + y0, zp, ut, 0);
 					tessellator1.addVertexWithUV(xp, yo + y0 + y, zp, ut, 1F);
@@ -238,7 +235,7 @@ public class SkyblockSkyRenderer extends IRenderHandler {
 		// === Rainbow
 		GL11.glPushMatrix();
 		OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-		mc.renderEngine.bindTexture(textureRainbow); 
+		mc.renderEngine.bindTexture(textureRainbow);
 		f10 = 10F;
 		float effCelAng1 = celAng;
 		if(effCelAng1 > 0.25F)
@@ -268,7 +265,7 @@ public class SkyblockSkyRenderer extends IRenderHandler {
 			float ut = ang * uPer;
 			if(i % 2 == 0) {
 				tessellator1.addVertexWithUV(xp, yo + y0 + y, zp, ut, 1F);
-				tessellator1.addVertexWithUV(xp, yo + y0, zp, ut, 0);   
+				tessellator1.addVertexWithUV(xp, yo + y0, zp, ut, 0);
 			} else {
 				tessellator1.addVertexWithUV(xp, yo + y0, zp, ut, 0);
 				tessellator1.addVertexWithUV(xp, yo + y0 + y, zp, ut, 1F);
@@ -282,10 +279,10 @@ public class SkyblockSkyRenderer extends IRenderHandler {
 
 		OpenGlHelper.glBlendFunc(770, 1, 1, 0);
 
-		// === Sun	
+		// === Sun
 		GL11.glRotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
 		f10 = 60.0F;
-		mc.renderEngine.bindTexture(textureSun); 
+		mc.renderEngine.bindTexture(textureSun);
 		drawObject(tessellator1, f10);
 
 		// === Moon
@@ -294,15 +291,15 @@ public class SkyblockSkyRenderer extends IRenderHandler {
 		int k = world.getMoonPhase();
 		int l = k % 4;
 		int i1 = k / 4 % 2;
-		float f14 = (float)(l + 0) / 4.0F;
-		float f15 = (float)(i1 + 0) / 2.0F;
-		float f16 = (float)(l + 1) / 4.0F;
-		float f17 = (float)(i1 + 1) / 2.0F;
+		float f14 = (l + 0) / 4.0F;
+		float f15 = (i1 + 0) / 2.0F;
+		float f16 = (l + 1) / 4.0F;
+		float f17 = (i1 + 1) / 2.0F;
 		tessellator1.startDrawingQuads();
-		tessellator1.addVertexWithUV((double)(-f10), -100.0D, (double)f10, (double)f16, (double)f17);
-		tessellator1.addVertexWithUV((double)f10, -100.0D, (double)f10, (double)f14, (double)f17);
-		tessellator1.addVertexWithUV((double)f10, -100.0D, (double)(-f10), (double)f14, (double)f15);
-		tessellator1.addVertexWithUV((double)(-f10), -100.0D, (double)(-f10), (double)f16, (double)f15);
+		tessellator1.addVertexWithUV((-f10), -100.0D, f10, f16, f17);
+		tessellator1.addVertexWithUV(f10, -100.0D, f10, f14, f17);
+		tessellator1.addVertexWithUV(f10, -100.0D, (-f10), f14, f15);
+		tessellator1.addVertexWithUV((-f10), -100.0D, (-f10), f16, f15);
 		tessellator1.draw();
 
 		// === Stars
@@ -360,10 +357,10 @@ public class SkyblockSkyRenderer extends IRenderHandler {
 
 	private void drawObject(Tessellator tess, float f10) {
 		tess.startDrawingQuads();
-		tess.addVertexWithUV((double)(-f10), 100.0D, (double)(-f10), 0.0D, 0.0D);
-		tess.addVertexWithUV((double)f10, 100.0D, (double)(-f10), 1.0D, 0.0D);
-		tess.addVertexWithUV((double)f10, 100.0D, (double)f10, 1.0D, 1.0D);
-		tess.addVertexWithUV((double)(-f10), 100.0D, (double)f10, 0.0D, 1.0D);
+		tess.addVertexWithUV((-f10), 100.0D, (-f10), 0.0D, 0.0D);
+		tess.addVertexWithUV(f10, 100.0D, (-f10), 1.0D, 0.0D);
+		tess.addVertexWithUV(f10, 100.0D, f10, 1.0D, 1.0D);
+		tess.addVertexWithUV((-f10), 100.0D, f10, 0.0D, 1.0D);
 		tess.draw();
 	}
 
