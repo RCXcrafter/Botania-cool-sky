@@ -14,10 +14,12 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraft.server.MinecraftServer;
+import vazkii.botania.common.core.handler.ConfigHandler;
 
 public class CommonProxy {
 
 	public void preInit(FMLPreInitializationEvent event) {
+		ConfigHandler.loadConfig(event.getSuggestedConfigurationFile());
 	}
 
 	public void init(FMLInitializationEvent event) {

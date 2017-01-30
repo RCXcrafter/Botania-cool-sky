@@ -12,7 +12,7 @@ package vazkii.botania.client.lib;
 
 public final class LibResources {
 
-	public static final String PREFIX_MOD = "botania:";
+	public static final String PREFIX_MOD = "botaniacoolsky:";
 
 	public static final String PREFIX_MISC = PREFIX_MOD + "textures/misc/";
 

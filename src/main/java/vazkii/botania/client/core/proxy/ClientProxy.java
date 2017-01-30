@@ -11,6 +11,8 @@
 package vazkii.botania.client.core.proxy;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.common.MinecraftForge;
 import vazkii.botania.client.core.handler.ClientTickHandler;
 import vazkii.botania.client.render.world.SkyblockRenderEvents;
@@ -19,10 +21,20 @@ import vazkii.botania.common.core.proxy.CommonProxy;
 public class ClientProxy extends CommonProxy {
 
 	@Override
+	public void preInit(FMLPreInitializationEvent event) {
+		super.preInit(event);
+	}
+
+	@Override
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
 
 		MinecraftForge.EVENT_BUS.register(new SkyblockRenderEvents());
+	}
+
+	@Override
+	public void postInit(FMLPostInitializationEvent event) {
+		super.postInit(event);
 	}
 
 	@Override

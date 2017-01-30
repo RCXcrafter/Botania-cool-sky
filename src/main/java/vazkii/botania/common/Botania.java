@@ -20,7 +20,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import vazkii.botania.common.core.proxy.CommonProxy;
 import vazkii.botania.common.lib.LibMisc;
 
-@Mod(modid = LibMisc.MOD_ID, name = LibMisc.MOD_NAME, version = LibMisc.VERSION, dependencies = LibMisc.DEPENDENCIES, guiFactory = LibMisc.GUI_FACTORY)
+@Mod(modid = LibMisc.MOD_ID, name = LibMisc.MOD_NAME, version = LibMisc.VERSION, /*dependencies = LibMisc.DEPENDENCIES,*/ guiFactory = LibMisc.GUI_FACTORY)
 public class Botania {
 
 	@Instance(LibMisc.MOD_ID)
